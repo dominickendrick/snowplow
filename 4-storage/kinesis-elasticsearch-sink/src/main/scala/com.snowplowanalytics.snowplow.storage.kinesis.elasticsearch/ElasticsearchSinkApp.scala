@@ -79,8 +79,8 @@ object KinesisEnrichApp extends App {
 
     val props = new Properties
 
-    props.setProperty(KinesisConnectorConfiguration.PROP_KINESIS_INPUT_STREAM, "enrichedfbtest")
-    props.setProperty(KinesisConnectorConfiguration.PROP_KINESIS_ENDPOINT, "https://kinesis.us-east-1.amazonaws.com")
+    props.setProperty(KinesisConnectorConfiguration.PROP_KINESIS_INPUT_STREAM, "soulmates-snowplow-collector")
+    props.setProperty(KinesisConnectorConfiguration.PROP_KINESIS_ENDPOINT, "https://kinesis.eu-west-1.amazonaws.com")
     props.setProperty(KinesisConnectorConfiguration.PROP_ELASTICSEARCH_PORT, "9300")
     props.setProperty(KinesisConnectorConfiguration.PROP_ELASTICSEARCH_ENDPOINT, "localhost")
     props.setProperty(KinesisConnectorConfiguration.DEFAULT_ELASTICSEARCH_CLUSTER_NAME, "elasticsearch")

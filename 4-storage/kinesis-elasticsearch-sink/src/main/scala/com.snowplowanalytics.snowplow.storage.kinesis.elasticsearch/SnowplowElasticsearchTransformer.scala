@@ -25,9 +25,9 @@ import com.amazonaws.services.kinesis.connectors.elasticsearch.{
   ElasticsearchTransformer
 }
 import com.amazonaws.services.kinesis.model.Record
-
 // Scala
 import scala.util.parsing.json.JSONObject
+
 
 class SnowplowElasticsearchTransformer extends ElasticsearchTransformer[String]
   with ITransformer[String, ElasticsearchObject] {
@@ -164,7 +164,7 @@ class SnowplowElasticsearchTransformer extends ElasticsearchTransformer[String]
     "tr_total",
     "tr_tax",
     "tr_shipping",
-    "ti_price",
+    "ti_price"
     )
   private val boolFields = new Set(
     "br_features_pdf",
@@ -180,21 +180,24 @@ class SnowplowElasticsearchTransformer extends ElasticsearchTransformer[String]
     "dvce_ismobile"
     )
 
-  private val converter: (entry: (String, String) => (String, Any)) = e => {
+  private def converter(e: (String, String)): (String, Any) = {
+
     try {
       if (intFields.contains(e._1)) {
         (e._1, e._2.toInt)
       } else if (doubleFields.contains(e._1)) {
         (e._1, e._2.toDouble)
-      } else if boolFields.contains(e._1) {
+      } else if (boolFields.contains(e._1)) {
         (e._1, e._2.toBoolean)
       } else {
           e
       }
+    }
     catch {
       IllegalArgumentException(iae) => e // TODO: log the exception
     }
   }
+
 
   override def toClass(record: Record): String = {
 
@@ -203,6 +206,7 @@ class SnowplowElasticsearchTransformer extends ElasticsearchTransformer[String]
     val fieldsMap = fields.zip(fieldValues).filter(! _._2.isEmpty).map(converter).toMap
 
     JSONObject(fieldsMap).toString()
+
   }
 
   override def fromClass(record: String): ElasticsearchObject  =  {
